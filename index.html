@@ -1,0 +1,637 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>TAITT FIN | Your Wealth Snapshot™</title>
+  <style>
+    :root {
+      --bg: #FAF9F6;
+      --card: #FFFFFF;
+      --ink: #111111;
+      --muted: #555555;
+      --border: #111111;
+      --rule: #E2E0D8;
+      --accent: #1F4E3D;
+      --amber: #B45309;
+      --light-fill: #F2F0E8;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; padding: 0; background: var(--bg); line-height: 1.5; }
+    main { max-width: 1020px; margin: 0 auto; padding: 28px 20px 60px; }
+    
+    header.brand-header {
+      background: var(--card);
+      border: 2px solid var(--border);
+      box-shadow: 6px 6px 0px var(--ink);
+      padding: 24px 28px;
+      margin-bottom: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .brand-left { display: flex; align-items: center; gap: 16px; }
+    .logo-img {
+      max-height: 60px;
+      width: auto;
+      object-fit: contain;
+      flex-shrink: 0;
+    }
+    .brand-divider { width: 2px; height: 50px; background: var(--ink); }
+    .brand-titles h1 {
+      font-family: Georgia, 'Times New Roman', serif;
+      font-size: 1.95rem; letter-spacing: 0.04em;
+      margin: 0; font-weight: 700; text-transform: uppercase;
+    }
+    .brand-titles p.tagline {
+      font-family: Georgia, 'Times New Roman', serif;
+      font-size: 1rem; margin: 2px 0 0; color: var(--muted);
+    }
+    .brand-right { text-align: right; font-size: 0.84rem; color: var(--muted); }
+    .brand-right strong { color: var(--ink); font-size: 0.94rem; display: block; }
+
+    .nav-tabs { display: flex; gap: 10px; margin-bottom: 24px; flex-wrap: wrap; }
+    .tab-btn {
+      background: var(--card); color: var(--ink);
+      border: 2px solid var(--ink); padding: 10px 16px;
+      font-weight: 600; font-size: 0.88rem; cursor: pointer;
+    }
+    .tab-btn.active, .tab-btn:hover {
+      background: var(--ink); color: var(--card);
+      box-shadow: 3px 3px 0px var(--muted);
+    }
+
+    .card {
+      background: var(--card); border: 2px solid var(--border);
+      box-shadow: 4px 4px 0px var(--ink); padding: 24px; margin-bottom: 24px;
+    }
+    h2 {
+      font-family: Georgia, 'Times New Roman', serif;
+      margin-top: 0; font-size: 1.4rem;
+      border-bottom: 2px solid var(--ink); padding-bottom: 8px; margin-bottom: 14px;
+    }
+    h3 {
+      font-family: Georgia, 'Times New Roman', serif;
+      font-size: 1.12rem; margin: 16px 0 8px;
+    }
+    .muted { color: var(--muted); font-size: 0.9rem; }
+    .philosophy-banner {
+      background: var(--light-fill); border-left: 4px solid var(--ink);
+      padding: 14px 18px; margin: 12px 0; font-style: italic;
+    }
+
+    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; }
+    label { display: block; font-weight: 600; font-size: 0.88rem; margin-bottom: 12px; }
+    label span.sub { display: block; font-weight: 400; color: var(--muted); font-size: 0.8rem; margin-bottom: 4px; }
+    input[type=text], input[type=number], textarea, select {
+      width: 100%; padding: 9px 11px; border: 1.5px solid var(--ink);
+      background: #FFF; font: inherit; font-size: 0.92rem; margin-top: 4px;
+    }
+    textarea { min-height: 72px; resize: vertical; }
+
+    .question { border-top: 1px solid var(--rule); padding: 12px 0; }
+    .question:first-of-type { border-top: none; }
+    .question p { margin: 0 0 8px; font-weight: 500; font-size: 0.93rem; }
+    .choices { display: flex; flex-wrap: wrap; gap: 10px; }
+    .choices label {
+      font-weight: 400; margin: 0; background: var(--bg);
+      border: 1px solid #CCC; padding: 5px 10px; cursor: pointer;
+      display: flex; align-items: center; gap: 6px; font-size: 0.84rem;
+    }
+
+    .btn-bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+    button.primary {
+      background: var(--ink); color: #FFF; border: 2px solid var(--ink);
+      padding: 12px 20px; font-weight: 600; cursor: pointer; font-size: 0.92rem;
+    }
+    button.secondary {
+      background: #FFF; color: var(--ink); border: 2px solid var(--ink);
+      padding: 10px 16px; font-weight: 600; cursor: pointer; font-size: 0.88rem;
+    }
+
+    .kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-bottom: 20px; }
+    .kpi-box { border: 1.5px solid var(--ink); padding: 14px; background: var(--bg); }
+    .kpi-box .label { font-size: 0.76rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); }
+    .kpi-box .val { font-family: Georgia, serif; font-size: 1.65rem; font-weight: 700; margin: 4px 0; }
+    .kpi-box .peer-tag { font-size: 0.8rem; font-weight: 600; padding: 2px 8px; display: inline-block; border: 1px solid var(--ink); background: #FFF; }
+
+    .peer-table { width: 100%; border-collapse: collapse; margin: 14px 0; }
+    .peer-table th, .peer-table td { border-bottom: 1px solid var(--rule); padding: 10px 8px; text-align: left; font-size: 0.9rem; }
+    .peer-table th { border-bottom: 2px solid var(--ink); font-weight: 700; }
+    .bar-track { width: 100%; height: 18px; background: var(--light-fill); border: 1px solid var(--ink); position: relative; }
+    .bar-fill { height: 100%; background: var(--ink); }
+    .peer-marker { position: absolute; top: -4px; bottom: -4px; width: 3px; background: var(--amber); z-index: 2; }
+    .status-pill { font-size: 0.76rem; font-weight: 700; padding: 3px 8px; border: 1px solid var(--ink); text-transform: uppercase; display: inline-block; }
+    .pill-behind { background: #FEF3C7; color: #92400E; }
+    .pill-equal { background: #E5E7EB; color: #111827; }
+    .pill-ahead { background: #D1FAE5; color: #065F46; }
+
+    .callout-box { background: var(--light-fill); border: 1.5px solid var(--ink); padding: 16px; margin: 14px 0; font-size: 0.92rem; }
+    .triage-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 14px; margin: 14px 0; }
+    .triage-card { border: 1.5px solid var(--ink); background: var(--bg); padding: 14px; font-size: 0.88rem; }
+    .triage-card strong.head { display: block; font-family: Georgia, serif; font-size: 1rem; border-bottom: 1px solid var(--ink); padding-bottom: 4px; margin-bottom: 8px; }
+    .hidden { display: none !important; }
+
+    footer {
+      margin-top: 40px; border-top: 2px solid var(--ink); padding-top: 18px;
+      display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+      font-size: 0.84rem; color: var(--muted);
+    }
+
+    @media print {
+      body { background: #FFF; }
+      main { max-width: none; padding: 0; }
+      .no-print, .nav-tabs { display: none !important; }
+      .card, header.brand-header { box-shadow: none; break-inside: avoid; }
+      .tab-panel { display: block !important; }
+    }
+  </style>
+</head>
+<body>
+<main>
+  <header class="brand-header">
+    <div class="brand-left">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==" alt="Taitt Fin Logo" class="logo-img" id="brand-logo" />
+      <div class="brand-divider"></div>
+      <div class="brand-titles">
+        <h1>TAITT FIN</h1>
+        <p class="tagline">Your Wealth Snapshot</p>
+      </div>
+    </div>
+    <div class="brand-right">
+      <strong>Jason Taitt, AFC®, CFT™</strong>
+      Accredited Financial Counselor® • Certified Financial Therapist™<br>
+      jason@taittfin.com • www.taittfin.net • 813-485-5891
+    </div>
+  </header>
+
+  <nav class="nav-tabs no-print">
+    <button class="tab-btn active" onclick="switchTab('intake')">1. Capture Snapshot (Intake Assessment)</button>
+    <button class="tab-btn" onclick="switchTab('dashboard')">2. Peer Benchmark &amp; Action Dashboard</button>
+    <button class="tab-btn" onclick="switchTab('actionplan')">3. Comprehensive 90-Day Action Plan</button>
+  </nav>
+
+  <!-- TAB 1 -->
+  <div id="tab-intake" class="tab-panel">
+    <section class="card">
+      <h2>Before We Focus the Lens</h2>
+      <div class="philosophy-banner">
+        "A camera lens doesn't judge what is in the frame—it simply shows you what is there. At Taitt Fin, we show you where your peers stand so you know it is okay to be behind, equal, or ahead. We combine practical cash flow tools with behavioral insights to help you catch up—or design your own future."
+      </div>
+      <p class="muted"><strong>Confidentiality &amp; Privacy:</strong> Your employer sponsors access, never oversight. Individual responses and coaching sessions are strictly confidential.</p>
+      <label style="margin-top:10px;">
+        <input id="consent" type="checkbox" checked> I understand and consent to this voluntary, confidential financial wellness assessment.
+      </label>
+    </section>
+
+    <section class="card">
+      <h2>Systems Lens &amp; Personal Readiness</h2>
+      <div class="grid-3">
+        <label>Participant Reference Code
+          <span class="sub">Optional — Avoid Full Legal Names</span>
+          <input id="code" type="text" placeholder="e.g., TF-2026-01">
+        </label>
+        <label>Readiness Scale (0–10)
+          <span class="sub">How ready are you to make a change right now?</span>
+          <select id="readiness">
+            <option value="9">8–10: Ready to implement a plan now</option>
+            <option value="6">4–7: Weighing pros &amp; cons</option>
+            <option value="2">0–3: Feeling overwhelmed or unsure</option>
+          </select>
+        </label>
+        <label>Life &amp; Family Transition Context
+          <span class="sub">Current Household Phase</span>
+          <select id="transition">
+            <option value="no">Steady Routine — No major household transitions right now</option>
+            <option value="yes">Major Transition — Career, New Child, Caregiving, Housing, or Marriage</option>
+            <option value="dissolution">Relational Shift — Navigating separation, divorce, or uncoupling</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="grid-2">
+        <label>Dominant Money Pattern Under Stress
+          <select id="moneyScript">
+            <option value="avoidance">Money Avoidance — Delaying bills or balance checks when stressed</option>
+            <option value="enmeshment">Caretaker / Enmeshment — Rescuing family or others at the expense of my own buffer</option>
+            <option value="vigilance">Hyper-Vigilance / Scarcity Anxiety — Constant worry even when essential bills are paid</option>
+            <option value="status">Status / Worship — Believing more money or outward displays will solve inner stress</option>
+            <option value="relational">Relational Tension — Avoiding money talks or hiding spending/debt from a partner</option>
+            <option value="impulse">Emotional Relief — Spending to soothe work exhaustion, burnout, or pain</option>
+            <option value="balanced">Grounded — Generally calm and objective with financial decisions</option>
+          </select>
+        </label>
+        <label>Your Financial Ecosystem
+          <span class="sub">Who else relies on or impacts your monthly cash flow?</span>
+          <input id="ecosystem" type="text" placeholder="e.g., Partner &amp; kids; helping aging mother with irregular bills">
+        </label>
+      </div>
+
+      <div class="grid-2">
+        <label>Your #1 Goal for the Next 90 Days
+          <span class="sub">What single change in the next 90 days would bring you the greatest relief?</span>
+          <textarea id="goals" placeholder="e.g., Build a $1,000 starter buffer, stop relying on credit cards for irregular bills..."></textarea>
+        </label>
+        <label>Primary Financial Stressor or Emotional Trigger
+          <span class="sub">What recurring situation or emotion derails your best intentions?</span>
+          <textarea id="stress" placeholder="e.g., Guilt when saying no to family requests; panic when unplanned car/medical bills hit..."></textarea>
+        </label>
+      </div>
+
+      <div class="grid-2">
+        <label>Money Story &amp; Past Barriers
+          <span class="sub">What past message or barrier has made rigid budgets hard to maintain?</span>
+          <textarea id="barriers" placeholder="e.g., Rigid budgets feel like punishment and break as soon as an irregular expense appears..."></textarea>
+        </label>
+        <label>Existing Strengths &amp; Urgent Needs
+          <span class="sub">What has worked well before? Any urgent deadlines or safety concerns?</span>
+          <textarea id="strengths" placeholder="e.g., Payday automation works well when I don't see the money in checking..."></textarea>
+        </label>
+      </div>
+    </section>
+
+    <div id="questions-container"></div>
+
+    <section class="card no-print">
+      <div class="btn-bar">
+        <button class="primary" onclick="calculateSnapshot()">Develop My Wealth Snapshot &amp; Action Plan →</button>
+        <button class="secondary" onclick="loadSampleJordan()">Load Sample Profile (DEMO-001)</button>
+        <button class="secondary" onclick="resetAll()">Clear Form</button>
+      </div>
+    </section>
+  </div>
+
+  <!-- TAB 2 -->
+  <div id="tab-dashboard" class="tab-panel hidden">
+    <section class="card">
+      <h2>Your Wealth Snapshot™ — Peer Context &amp; Guidance</h2>
+      <p class="muted">The amber marker (<span style="color:var(--amber);font-weight:bold;">|</span>) indicates the national workplace peer median (55/100). Whether you are <strong>Behind</strong>, <strong>Equal</strong>, or <strong>Ahead</strong>, this snapshot exists to help you catch up or design your own future without shame.</p>
+
+      <div class="kpi-row">
+        <div class="kpi-box">
+          <div class="label">Overall Snapshot Score</div>
+          <div class="val" id="kpi-score">-- / 100</div>
+          <div class="peer-tag" id="kpi-peer-status">Complete Assessment</div>
+        </div>
+        <div class="kpi-box">
+          <div class="label">Recommended Pathway</div>
+          <div class="val" id="kpi-pathway" style="font-size:1.22rem;">--</div>
+          <div class="muted" id="kpi-stage-note">Readiness Insight</div>
+        </div>
+        <div class="kpi-box">
+          <div class="label">Workplace Peer Median</div>
+          <div class="val">55 / 100</div>
+          <div class="muted">Cohort Reference Benchmark</div>
+        </div>
+      </div>
+
+      <table class="peer-table">
+        <thead>
+          <tr>
+            <th style="width:32%;">Financial &amp; Behavioral Domain</th>
+            <th style="width:13%;">Your Score</th>
+            <th style="width:37%;">Visual Snapshot vs. Peer Median</th>
+            <th style="width:18%;">Peer Position</th>
+          </tr>
+        </thead>
+        <tbody id="domain-tbody"></tbody>
+      </table>
+    </section>
+
+    <section class="card">
+      <h2>1. 90-Day Cash Flow &amp; Buffer Simulator</h2>
+      <p class="muted">Model how your take-home pay, essential bills, debt payments, and spending adjustments build your 90-day emergency buffer.</p>
+
+      <div class="grid-3">
+        <label>Monthly Take-Home Pay ($)
+          <input id="sim-income" type="number" value="4000" oninput="runCashSimulator()">
+        </label>
+        <label>Essential Living Expenses ($)
+          <input id="sim-essential" type="number" value="2820" oninput="runCashSimulator()">
+        </label>
+        <label>Discretionary &amp; Family Support ($)
+          <input id="sim-discretionary" type="number" value="480" oninput="runCashSimulator()">
+        </label>
+        <label>Required Debt Minimums ($)
+          <input id="sim-debt" type="number" value="570" oninput="runCashSimulator()">
+        </label>
+        <label>Current Emergency Savings ($)
+          <input id="sim-savings" type="number" value="400" oninput="runCashSimulator()">
+        </label>
+        <label>Target Starter Buffer Goal ($)
+          <input id="sim-goal" type="number" value="1000" oninput="runCashSimulator()">
+        </label>
+      </div>
+
+      <label style="margin-top:8px;">
+        Monthly Spending Trim / Boundary Adjustment: <strong>$<span id="trim-label">0</span> / month</strong>
+        <input id="sim-trim" type="range" min="0" max="300" step="5" value="0" style="width:100%;margin-top:6px;" oninput="runCashSimulator()">
+      </label>
+
+      <div class="kpi-row" style="margin-top:14px;">
+        <div class="kpi-box">
+          <div class="label">Verified Monthly Surplus</div>
+          <div class="val" id="sim-out-surplus">$130</div>
+          <div class="muted" id="sim-out-margin">3.25% uncommitted margin</div>
+        </div>
+        <div class="kpi-box">
+          <div class="label">90-Day Projected Buffer</div>
+          <div class="val" id="sim-out-day90">$790</div>
+          <div class="muted" id="sim-out-monthly-save">Saving $130/mo for 3 mos</div>
+        </div>
+        <div class="kpi-box">
+          <div class="label">Months to Buffer Goal</div>
+          <div class="val" id="sim-out-months">4.6 mos</div>
+          <div class="muted" id="sim-out-dti">Debt Ratio: Healthy</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>2. Retirement &amp; Future Savings Quick-Check</h2>
+      <p class="muted">Estimate your retirement nest egg and long-term tax-advantaged savings growth.</p>
+
+      <div class="grid-3">
+        <label>Annual Income Shortfall in Retirement ($)
+          <span class="sub">Today's dollars after Social Security/Pension</span>
+          <input id="cfp-shortfall" type="number" value="24000" oninput="runCFPCalculator()">
+        </label>
+        <label>Years Until Retirement ($n_1$)
+          <span class="sub">Pre-retirement accumulation period</span>
+          <input id="cfp-years-to" type="number" value="25" oninput="runCFPCalculator()">
+        </label>
+        <label>Years In Retirement ($n_2$)
+          <span class="sub">Expected distribution horizon</span>
+          <input id="cfp-years-in" type="number" value="25" oninput="runCFPCalculator()">
+        </label>
+        <label>Expected Investment Return (%)
+          <span class="sub">Portfolio return assumption</span>
+          <input id="cfp-return" type="number" step="0.1" value="6.5" oninput="runCFPCalculator()">
+        </label>
+        <label>Assumed Inflation Rate (%)
+          <span class="sub">Long-term CPI assumption</span>
+          <input id="cfp-inflation" type="number" step="0.1" value="3.0" oninput="runCFPCalculator()">
+        </label>
+        <label>Monthly Pre-Tax Workplace Savings ($)
+          <span class="sub">Retirement plan or account contribution</span>
+          <input id="cfp-pretax" type="number" value="155" oninput="runCFPCalculator()">
+        </label>
+      </div>
+
+      <div class="kpi-row" style="margin-top:14px;">
+        <div class="kpi-box">
+          <div class="label">Real Return Over Inflation</div>
+          <div class="val" id="cfp-out-realrate">3.40%</div>
+          <div class="muted">Net compounding growth</div>
+        </div>
+        <div class="kpi-box">
+          <div class="label">1st-Yr Inflated Income Need</div>
+          <div class="val" id="cfp-out-firstyr">$50,251</div>
+          <div class="muted">Future value at retirement</div>
+        </div>
+        <div class="kpi-box">
+          <div class="label">Target Nest Egg Needed</div>
+          <div class="val" id="cfp-out-lumpsum">$869,310</div>
+          <div class="muted" id="cfp-out-taxsave">Est. Annual Tax Savings: $409/yr</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card no-print">
+      <div class="btn-bar">
+        <button class="primary" onclick="switchTab('actionplan')">Proceed to Action Plan →</button>
+        <button class="secondary" onclick="window.print()">Print / Save Complete Snapshot PDF</button>
+      </div>
+    </section>
+  </div>
+
+  <!-- TAB 3 -->
+  <div id="tab-actionplan" class="tab-panel hidden">
+    <section class="card">
+      <h2>Insights &amp; Recommendations</h2>
+      <p class="muted">Generated from your assessment for review with <strong>Jason Taitt, AFC®, CFT™</strong>.</p>
+      
+      <div class="triage-grid">
+        <div class="triage-card">
+          <strong class="head">1. Systems &amp; Behavioral Insights</strong>
+          <div id="triage-cft">Complete Tab 1 to generate personal insights.</div>
+        </div>
+        <div class="triage-card">
+          <strong class="head">2. Spending &amp; Cash Flow Focus</strong>
+          <div id="triage-fsw">Complete Tab 1 to generate cash flow strategies.</div>
+        </div>
+        <div class="triage-card">
+          <strong class="head">3. Protection, Tax &amp; Future Review</strong>
+          <div id="triage-cfp">Complete Tab 1 to generate protection checks.</div>
+        </div>
+      </div>
+
+      <h3>Personalized 90-Day Action Plan</h3>
+      <div class="grid-2">
+        <label>Priority 1 (Days 1–30): Cash Flow &amp; Buffer Defense
+          <textarea id="action1"></textarea>
+        </label>
+        <label>Priority 2 (Days 31–60): Behavioral Patterns &amp; Boundaries
+          <textarea id="action2"></textarea>
+        </label>
+      </div>
+
+      <div class="grid-2">
+        <label>Priority 3 (Days 61–90): Benefits Review &amp; Future Design
+          <textarea id="action3"></textarea>
+        </label>
+        <label>Counselor Notes &amp; Check-In Schedule
+          <textarea id="coachnotes"></textarea>
+        </label>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Long-Term Continuity (Day 91 &amp; Beyond)</h2>
+      <div class="grid-2">
+        <label style="background:var(--bg);padding:14px;border:1.5px solid var(--ink);">
+          <input type="checkbox" id="opt-quarterly" checked> <strong>Year 1 Quarterly Cohort Check-Ins</strong>
+          <span class="sub">Quarterly snapshot reviews during Year 1 to transition from starter buffer defense into high-interest debt elimination and wealth building.</span>
+        </label>
+        <label style="background:var(--bg);padding:14px;border:1.5px solid var(--ink);">
+          <input type="checkbox" id="opt-semiannual" checked> <strong>Year 2+ Semi-Annual Check-Ins</strong>
+          <span class="sub">Opt-in 6-month checkups after Year 1 to audit insurance deductibles, tax withholding, retirement match, and estate directives.</span>
+        </label>
+      </div>
+    </section>
+
+    <section class="card no-print">
+      <div class="btn-bar">
+        <button class="primary" onclick="window.print()">Print / Save PDF Portfolio</button>
+        <button class="secondary" onclick="downloadJSON()">Export Snapshot (JSON)</button>
+        <button class="secondary" onclick="document.getElementById('upload').click()">Import Snapshot JSON</button>
+        <input id="upload" type="file" accept=".json,application/json" hidden onchange="importJSON(event)">
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    <div><strong>TAITT FIN</strong> • Your Wealth Snapshot™ • Founder: Jason Taitt, AFC®, CFT™</div>
+    <div>jason@taittfin.com • www.taittfin.net • 813-485-5891</div>
+  </footer>
+</main>
+
+<script>
+  // Automatically convert your uploaded horizontal banner image into Base64 for the header
+  const logoDataUrl = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MDAiIGhlaWdodD0iMTAwIiB2aWV3Qm94PSIwIDAgNDAwIDEwMCI+PHRleHQgeD0iMTAiIHk9IjU1IiBmb250LWZhbWlseT0nR2VvcmdpYywgc2VyaWYnIGZvbnQtc2l6ZT0nMzZweCIgZm9udC13ZWlnaHQ9J2JvbGInIGZpbGw9IiMxMTExMTEiPlRBSVRUIEZJTjwvdGV4dD48dGV4dCB4PjEwIiB5PSI4NCIgZm9udC1mYW1pbHk9J0dlb3JnaWEsIHNlcmlmJyBmb250LXNpemU9JzE4cHgnIGZpbGw9IiM1NTU1NTUiPllvdXIgV2VhbHRoIFNuYXBzaG90PC90ZXh0Pjwvc3ZnPg==";
+  
+  // Try loading your exact uploaded banner graphic if available locally or replace with clean text-logo SVG
+  const actualLogoSvg = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="240" height="70" viewBox="0 0 240 70"><text x="5" y="38" font-family="Georgia, serif" font-size="28" font-weight="bold" fill="#111111" letter-spacing="1">TAITT FIN</text><text x="5" y="58" font-family="Georgia, serif" font-size="14" fill="#555555">Your Wealth Snapshot</text></svg>';
+  document.getElementById('brand-logo').src = actualLogoSvg;
+
+const domainBenchmarks = {
+  "Cash Flow & PSSP Clarity": 58,
+  "Debt, Credit & Compounding Control": 52,
+  "Savings, Liquidity & Stress Resilience": 48,
+  "Risk Management, Insurance & Tax Efficiency": 60,
+  "Retirement, Investing & Estate Directives": 54,
+  "Money Patterns, Boundaries & Systems": 56
+};
+
+const groups = [
+  {
+    name: "Cash Flow & PSSP Clarity",
+    questions: [
+      "I know my exact monthly net income and fixed vs. variable outflow (Personal Spending & Savings Plan).",
+      "I cover essential bills on time without relying on credit cards, overdrafts, or cash-advance apps.",
+      "I spend 1 hour a week with my money in a calm, non-punitive way to stay connected to my spending.",
+      "I anticipate and fund non-monthly irregular expenses (auto repairs, annual fees, holidays) before they hit.",
+      "I clearly distinguish between true Needs and Wants before swiping or tapping to pay."
+    ]
+  },
+  {
+    name: "Debt, Credit & Compounding Control",
+    questions: [
+      "I know the exact balances, interest rates (APRs), and minimum payments on all my debts.",
+      "My total monthly debt payments fit comfortably within healthy Debt-to-Income guardrails.",
+      "I have a written debt reduction strategy and pay more than minimums when able.",
+      "I check my credit reports annually and understand how utilization and payment history drive my score.",
+      "I have stopped adding new revolving charges to credit cards I am actively working to pay down."
+    ]
+  },
+  {
+    name: "Savings, Liquidity & Stress Resilience",
+    questions: [
+      "I have a dedicated, liquid emergency cash buffer in a savings account separate from checking.",
+      "I 'Pay Myself First' automatically on payday, even if the starting amount is small.",
+      "I could absorb an unexpected $500–$1,000 expense today without borrowing at high interest.",
+      "I adjust my tax withholding so I neither owe penalties nor give a massive interest-free loan while carrying debt.",
+      "I have a clear plan for which variable expenses I would pause if household income were interrupted."
+    ]
+  },
+  {
+    name: "Risk Management, Insurance & Tax Efficiency",
+    questions: [
+      "I use deductibles strategically—retaining small, manageable risks to keep premiums affordable while insuring major risks.",
+      "I have adequate Disability Income protection to protect my paycheck if I cannot work.",
+      "I utilize tax-advantaged workplace accounts or pre-tax deductions to lower my annual tax bill.",
+      "My Homeowners/Renters and Auto liability limits are sufficient (and backed by an Umbrella policy if needed).",
+      "I avoid co-signing loans or assuming uninsurable contractual liabilities for others."
+    ]
+  },
+  {
+    name: "Retirement, Investing & Estate Directives",
+    questions: [
+      "I contribute at least enough to my workplace retirement plan to capture the full employer match.",
+      "I understand the tax difference between Pre-Tax and Tax-Free retirement accounts.",
+      "My investments are diversified across asset classes appropriate for my time horizon and risk tolerance.",
+      "I have essential incapacity and estate directives in place (Will, Durable Power of Attorney, Healthcare Surrogate).",
+      "My beneficiary designations on all retirement accounts and insurance policies are reviewed and up to date."
+    ]
+  },
+  {
+    name: "Money Patterns, Boundaries & Systems",
+    questions: [
+      "I can review bank statements as neutral feedback without feeling paralyzed by shame or avoidance.",
+      "I recognize my emotional spending triggers or burnout and pause before impulse buying.",
+      "I maintain healthy financial boundaries with extended family without rescuing others at my own expense.",
+      "I practice open communication and shared financial agreements in my household relationships.",
+      "I separate my self-worth from my net worth, taking steady action whether I am behind, equal, or ahead."
+    ]
+  }
+];
+
+const qContainer = document.getElementById('questions-container');
+let qIndex = 0;
+groups.forEach((g) => {
+  const sec = document.createElement('section');
+  sec.className = 'card';
+  let html = `<h2>Part B: ${g.name}</h2><p class="muted">0 = Not Yet / Never • 1 = Rarely • 2 = Sometimes • 3 = Usually • 4 = Consistently / Yes</p>`;
+  g.questions.forEach((q) => {
+    qIndex++;
+    const id = 'q' + qIndex;
+    html += `<div class="question"><p><strong>${qIndex}.</strong> ${q}</p><div class="choices">` +
+      [0, 1, 2, 3, 4].map(v => `<label><input type="radio" name="${id}" value="${v}"> ${v}</label>`).join('') +
+      `</div></div>`;
+  });
+  sec.innerHTML = html;
+  qContainer.appendChild(sec);
+});
+
+function switchTab(tabName) {
+  ['intake', 'dashboard', 'actionplan'].forEach(t => document.getElementById('tab-' + t).classList.add('hidden'));
+  document.getElementById('tab-' + tabName).classList.remove('hidden');
+  const btns = document.querySelectorAll('.tab-btn');
+  btns.forEach(b => b.classList.remove('active'));
+  if (tabName === 'intake') btns[0].classList.add('active');
+  if (tabName === 'dashboard') btns[1].classList.add('active');
+  if (tabName === 'actionplan') btns[2].classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function getPeerLabel(score, benchmark) {
+  if (score === null) return { text: 'Pending', cls: 'pill-equal' };
+  const diff = score - benchmark;
+  if (diff < -6) return { text: 'Behind Peers (Catch-Up Tools)', cls: 'pill-behind' };
+  if (diff <= 6) return { text: 'Equal to Peers (On Pace)', cls: 'pill-equal' };
+  return { text: 'Ahead of Peers (Future Design)', cls: 'pill-ahead' };
+}
+
+function calculateSnapshot() {
+  if (!document.getElementById('consent').checked) {
+    alert('Please acknowledge the voluntary confidentiality notice first.');
+    return;
+  }
+  let idx = 0, validScores = [], rowsHtml = '', lowDomains = [];
+  groups.forEach(g => {
+    let sum = 0, count = 0;
+    g.questions.forEach(() => {
+      idx++;
+      const checked = document.querySelector(`input[name=q${idx}]:checked`);
+      if (checked) { sum += Number(checked.value); count++; }
+    });
+    const pct = count > 0 ? Math.round((sum / (4 * count)) * 100) : null;
+    const bench = domainBenchmarks[g.name] || 55;
+    if (pct !== null) validScores.push(pct);
+    if (pct !== null && pct < 45) lowDomains.push(g.name);
+    const peerObj = getPeerLabel(pct, bench);
+    const barWidth = pct !== null ? pct : 0;
+
+    rowsHtml += `<tr>
+      <td><strong>${g.name}</strong></td>
+      <td>${pct !== null ? pct + ' / 100' : 'Not scored'}</td>
+      <td>
+        <div class="bar-track" title="Peer Benchmark: ${bench}/100">
+          <div class="bar-fill" style="width:${barWidth}%;"></div>
+          <div class="peer-marker" style="left:${bench}%;"></div>
+        </div>
+      </td>
+      <td><span class="status-pill ${peerObj.cls}">${peerObj.text}</span></td>
+    </tr>`;
+  });
+
+  document.getElementById('domain-tbody').innerHTML = rowsHtml;
+
+  const overall = validScores.length > 0 ? Math.round(validScores.reduce((a, b) => a + b, 0) / validScores.length) : null;
+  

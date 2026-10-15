@@ -1,0 +1,519 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>TAITT FIN | Your Wealth Snapshot™ — Kickoff Presentation</title>
+  <style>
+    :root {
+      --bg: #FAF9F6;
+      --card: #FFFFFF;
+      --ink: #111111;
+      --muted: #555555;
+      --amber: #B45309;
+      --light-fill: #F2F0E8;
+      --rule: #E2E0D8;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 0;
+      background: var(--bg); color: var(--ink);
+      display: flex; flex-direction: column;
+      min-height: 100vh; overflow-x: hidden;
+    }
+
+    /* Top Control Bar */
+    .deck-topbar {
+      background: var(--card);
+      border-bottom: 2px solid var(--ink);
+      padding: 12px 28px;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 12px;
+    }
+    .deck-brand {
+      display: flex; align-items: center; gap: 12px;
+    }
+    .logo-img {
+      max-height: 48px; width: auto; object-fit: contain;
+    }
+    .deck-controls {
+      display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    }
+    .deck-btn {
+      background: var(--card); color: var(--ink);
+      border: 1.5px solid var(--ink); padding: 7px 14px;
+      font-weight: 600; font-size: 0.85rem; cursor: pointer;
+    }
+    .deck-btn:hover, .deck-btn.active {
+      background: var(--ink); color: var(--card);
+    }
+    .slide-counter {
+      font-weight: 700; font-size: 0.9rem; padding: 0 8px;
+    }
+
+    /* Progress Bar */
+    .progress-track {
+      width: 100%; height: 5px; background: var(--rule);
+    }
+    .progress-fill {
+      height: 100%; background: var(--ink); width: 12.5%;
+      transition: width 0.25s ease;
+    }
+
+    /* Stage & Slide Card */
+    .stage {
+      flex: 1; display: flex; flex-direction: column;
+      justify-content: center; align-items: center;
+      padding: 28px 24px; max-width: 1140px; width: 100%; margin: 0 auto;
+    }
+    .slide {
+      display: none; width: 100%;
+      background: var(--card);
+      border: 2.5px solid var(--ink);
+      box-shadow: 8px 8px 0px var(--ink);
+      padding: 40px 48px;
+      min-height: 540px;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .slide.active { display: flex; }
+
+    .slide-header {
+      display: flex; justify-content: space-between; align-items: center;
+      border-bottom: 2px solid var(--ink); padding-bottom: 14px; margin-bottom: 22px;
+      gap: 16px;
+    }
+    .slide-title-area h1, .slide-title-area h2 {
+      font-family: Georgia, serif; font-size: 1.9rem; margin: 0; line-height: 1.2;
+    }
+    .slide-kicker {
+      font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--amber); font-weight: 700; margin-bottom: 3px;
+    }
+    .header-logo {
+      max-height: 40px; width: auto; object-fit: contain;
+    }
+    .time-pill {
+      border: 1.5px solid var(--ink); background: var(--light-fill);
+      padding: 4px 10px; font-size: 0.78rem; font-weight: 700; white-space: nowrap;
+    }
+
+    .slide-body { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+    .quote-banner {
+      background: var(--light-fill); border-left: 5px solid var(--ink);
+      padding: 16px 20px; font-family: Georgia, serif; font-size: 1.15rem;
+      font-style: italic; margin-bottom: 20px;
+    }
+    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; }
+
+    .box {
+      border: 1.5px solid var(--ink); background: var(--bg); padding: 16px;
+    }
+    .box h3 {
+      font-family: Georgia, serif; margin: 0 0 8px; font-size: 1.1rem;
+      border-bottom: 1px solid var(--ink); padding-bottom: 6px;
+    }
+    .box ul, .slide-body ul {
+      margin: 8px 0 0; padding-left: 18px; font-size: 0.98rem; line-height: 1.55;
+    }
+    .box li, .slide-body li { margin-bottom: 6px; }
+
+    .slide-footer {
+      border-top: 1px solid var(--rule); padding-top: 12px; margin-top: 20px;
+      display: flex; justify-content: space-between; font-size: 0.82rem; color: var(--muted);
+    }
+
+    /* Speaker Notes Drawer */
+    .notes-panel {
+      width: 100%; max-width: 1092px; margin: 0 auto 28px;
+      background: #111111; color: #FAF9F6;
+      border: 2px solid var(--ink); padding: 18px 24px;
+      font-size: 0.95rem; line-height: 1.55;
+    }
+    .notes-panel.hidden { display: none; }
+    .notes-panel strong.label {
+      color: #FBBF24; text-transform: uppercase; letter-spacing: 0.06em;
+      font-size: 0.78rem; display: block; margin-bottom: 6px;
+    }
+
+    @media print {
+      .deck-topbar, .progress-track, .notes-panel { display: none !important; }
+      .stage { padding: 0; max-width: none; display: block; }
+      .slide {
+        display: flex !important; box-shadow: none;
+        page-break-after: always; margin-bottom: 24px; min-height: 90vh;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="deck-topbar">
+    <div class="deck-brand">
+      <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='40' viewBox='0 0 180 40'><text x='2' y='25' font-family='Georgia,serif' font-size='20' font-weight='bold' fill='%23111111'>TAITT FIN</text></svg>" alt="Taitt Fin" class="logo-img" />
+    </div>
+    <div class="deck-controls">
+      <button class="deck-btn" onclick="prevSlide()">← Prev</button>
+      <span class="slide-counter" id="counter">Slide 1 / 8</span>
+      <button class="deck-btn" onclick="nextSlide()">Next →</button>
+      <button class="deck-btn active" id="notes-btn" onclick="toggleNotes()">Speaker Notes (S)</button>
+      <a href="index.html" target="_blank" class="deck-btn" style="text-decoration:none;">Open Live Snapshot Tool ↗</a>
+      <button class="deck-btn" onclick="window.print()">Print / Save PDF Deck</button>
+    </div>
+  </div>
+
+  <div class="progress-track">
+    <div class="progress-fill" id="progress"></div>
+  </div>
+
+  <div class="stage">
+
+    <!-- SLIDE 1 -->
+    <section class="slide active" data-notes="Welcome everyone. Before we look at a single dollar sign today, think about how a camera lens works. A camera lens doesn't judge what is in the frame—it simply shows you where the focus is off so you can adjust the settings. At Taitt Fin, we show you where your peers stand so you know it is okay to be behind, equal, or ahead. If you are lagging behind, we give you the practical cash flow and behavioral tools to catch up—or design your own future.">
+      <div class="slide-header">
+        <div class="slide-title-area">
+          <div class="slide-kicker">Workplace Financial Wellness Kickoff</div>
+          <h1>Your Wealth Snapshot™</h1>
+        </div>
+        <img src="" alt="Taitt Fin Banner" class="header-logo slide-logo-render" />
+      </div>
+      <div class="slide-body">
+        <div class="quote-banner">
+          "A camera lens doesn't judge what is in the frame—it simply shows you what is there. Whether you are behind, equal, or ahead of your peers, our goal is to give you the clarity to catch up or design your own future."
+        </div>
+        <div class="grid-3">
+          <div class="box">
+            <h3>1. Clear Perspective</h3>
+            <p><strong>The Big Picture:</strong> Understanding your household financial ecosystem without shame or jargon.</p>
+          </div>
+          <div class="box">
+            <h3>2. Practical Cash Flow</h3>
+            <p><strong>Everyday Habits:</strong> Moving beyond rigid budgets to build a sustainable Personal Spending &amp; Savings Plan.</p>
+          </div>
+          <div class="box">
+            <h3>3. Long-Term Design</h3>
+            <p><strong>Future Wealth:</strong> Protecting your income, reducing high-interest debt, and designing retirement readiness.</p>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <span>Facilitator: <strong>Jason Taitt, AFC®, CFT™</strong></span>
+        <span>jason@taittfin.com • www.taittfin.net • 813-485-5891</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 2 -->
+    <section class="slide" data-notes="Rule number one today: your employer sponsors your access to this program, but they never see your data. Nothing you type into Your Wealth Snapshot or share in our 1-on-1 coaching sessions ever goes back to HR or management. Second, our digital tool runs 100% locally inside your web browser—there is no cloud database storing your personal numbers. Third, I operate as a confidential counselor and educator: I never sell insurance or commissioned investment products.">
+      <div class="slide-header">
+        <div class="slide-title-area">
+          <div class="slide-kicker">Trust, Ethics &amp; Psychological Safety</div>
+          <h2>The Confidentiality Firewall</h2>
+        </div>
+        <img src="" alt="Taitt Fin Banner" class="header-logo slide-logo-render" />
+      </div>
+      <div class="slide-body">
+        <div class="grid-2">
+          <div class="box">
+            <h3>Employer Sponsors Access, Never Oversight</h3>
+            <ul>
+              <li><strong>100% Private 1-on-1s:</strong> HR and management never see your scores, debt balances, or coaching conversations[span_0](start_span)[span_0](end_span)[span_1](start_span)[span_1](end_span).</li>
+              <li><strong>Zero-Server Web Privacy:</strong> The Snapshot calculator runs locally in your browser. You own and control your file.</li>
+              <li><strong>Safe Space for Real Life:</strong> Built for real-world stress—whether you are navigating debt, caregiving, partner talks, or life transitions.</li>
+            </ul>
+          </div>
+          <div class="box">
+            <h3>Independent &amp; Conflict-Free Guidance</h3>
+            <ul>
+              <li><strong>No Product Sales:</strong> Taitt Fin never sells insurance policies, annuities, or commissioned brokerage products[span_2](start_span)[span_2](end_span)[span_3](start_span)[span_3](end_span).</li>
+              <li><strong>Pure Education &amp; Support:</strong> Grounded in professional counseling and financial wellness standards.</li>
+              <li><strong>You Stay in Control:</strong> We co-create a 90-day plan; you decide every final step.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <span>TAITT FIN — Your Wealth Snapshot™</span>
+        <span>Slide 2 of 8</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 3 -->
+    <section class="slide" data-notes="Why do smart, hardworking people abandon traditional budgets by week three? Because standard budgets pretend you live in an isolated bubble. In our coaching, we look at the real ecosystem around your paycheck—including family support, partner communication, and stress triggers. Research shows that financial strain impacts our mental health and decision-making when we feel trapped. When we remove the shame and treat bank statements like a neutral mirror reading, you regain clarity immediately.">
+      <div class="slide-header">
+        <div class="slide-title-area">
+          <div class="slide-kicker">Systems Lens &amp; Household Dynamics</div>
+          <h2>Why Good People Miss Their Own Goals</h2>
+        </div>
+        <img src="" alt="Taitt Fin Banner" class="header-logo slide-logo-render" />
+      </div>
+      <div class="slide-body">
+        <div class="grid-2">
+          <div class="box">
+            <h3>The Financial Ecosystem</h3>
+            <ul>
+              <li><strong>Nobody Operates in a Vacuum:</strong> Your paycheck connects to your partner, children, aging parents, or extended family obligations.</li>
+              <li><strong>Family Boundaries:</strong> Balancing support for loved ones without draining your own emergency reserves.</li>
+              <li><strong>Early Money Beliefs:</strong> Unpacking the unwritten rules and habits we learned growing up.</li>
+            </ul>
+          </div>
+          <div class="box">
+            <h3>Stress, Clarity &amp; Connection</h3>
+            <ul>
+              <li><strong>Neutral Feedback:</strong> A low bank balance isn't a personal failure—it is simply a clear reflection of current cash flow.</li>
+              <li><strong>The Cost of Stress:</strong> Financial worry impacts sleep, focus, and overall well-being.</li>
+              <li><strong>Open Dialogue:</strong> Moving couples and households from blame and secrecy to shared, teamwork-based goals.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <span>TAITT FIN — Your Wealth Snapshot™</span>
+        <span>Slide 3 of 8</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 4 -->
+    <section class="slide" data-notes="In a cashless digital world, we suffer from 'The Money Disconnect'—we swipe, tap, and auto-pay without feeling the exchange of our time and labor. To fix that, we retire the punitive word 'budget' and build a Personal Spending & Savings Plan. And if you are carrying credit card debt, we follow a simple 3-step strategy: Step 1 is STOP adding new charges. Step 2 is PROCEED by building a starter cash buffer so emergencies don't force new borrowing. Step 3 is GO by accelerating debt payoff.">
+      <div class="slide-header">
+        <div class="slide-title-area">
+          <div class="slide-kicker">Behavioral Focus &amp; Cash Flow</div>
+          <h2>Healing "The Money Disconnect"</h2>
+        </div>
+        <img src="" alt="Taitt Fin Banner" class="header-logo slide-logo-render" />
+      </div>
+      <div class="slide-body">
+        <div class="grid-3">
+          <div class="box">
+            <h3>1. The Money Disconnect</h3>
+            <ul>
+              <li>Tap-to-pay, digital apps, and auto-drafts make spending frictionless and invisible[span_4](start_span)[span_4](end_span)[span_5](start_span)[span_5](end_span).</li>
+              <li><strong>The Antidote:</strong> Schedule <em>"1 Hour a Week with Your Money"</em> in a calm, focused environment.</li>
+            </ul>
+          </div>
+          <div class="box">
+            <h3>2. The Spending Plan</h3>
+            <ul>
+              <li>Traditional budgets feel like deprivation. A <strong>Personal Spending &amp; Savings Plan</strong> gives your money a clear mission[span_6](start_span)[span_6](end_span)[span_7](start_span)[span_7](end_span).</li>
+              <li><strong>Stability Rule:</strong><br>$\text{Income} - \text{Outflow} = \text{Surplus}$[span_8](start_span)[span_8](end_span)[span_9](start_span)[span_9](end_span)</li>
+              <li>Distinguish clearly between Needs and Wants.</li>
+            </ul>
+          </div>
+          <div class="box">
+            <h3>3. 3-Step Debt Strategy</h3>
+            <ul>
+              <li><strong>Step 1 — STOP:</strong> Freeze new charges on credit cards you are paying down.</li>
+              <li><strong>Step 2 — PROCEED:</strong> Build a $1,000 starter buffer so irregular bills don't trigger new debt.</li>
+              <li><strong>Step 3 — GO:</strong> Systematic debt reduction and asset building.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <span>TAITT FIN — Your Wealth Snapshot™</span>
+        <span>Slide 4 of 8</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 5 -->
+    <section class="slide" data-notes="Now let's switch over to our live tool and click 'Load Sample Profile (DEMO-001: Jordan Morgan)'. Jordan brings home $4,000/mo, has $400 in savings, carries $7,200 in credit card debt, and has only $130/mo left over. Notice why throwing that last $130 at credit cards immediately fails: the moment a car repair hits, Jordan has to swipe the card again. Instead, for Days 1 to 90, Jordan automates the $130/mo surplus and trims $70/mo in stress-triggered dining—building a $1,000 emergency shield in 90 days before accelerating debt payoff.">
+      <div class="slide-header">
+        <div class="slide-title-area">
+          <div class="slide-kicker">Live Interactive Case Study (DEMO-001)</div>
+          <h2>Inside "Your Wealth Snapshot™" — Jordan's 90-Day Pivot</h2>
+        </div>
+        <img src="" alt="Taitt Fin Banner" class="header-logo slide-logo-render" />
+      </div>
+      <div class="slide-body">
+        <div class="quote-banner" style="font-size:1.05rem;">
+          <strong>Live Demo Profile (Jordan Morgan):</strong> $4,000/mo Net Pay • $2,820 Essential Bills • $480 Discretionary • $570 Debt Minimums • <strong>$130/mo Uncommitted Margin</strong>
+        </div>
+        <div class="grid-2">
+          <div class="box">
+            <h3>Why Traditional Advice Backfires</h3>
+            <ul>
+              <li>With only $400 in savings and $130/mo margin, throwing extra cash at credit cards leaves Jordan vulnerable to <strong>unbudgeted irregular expenses</strong>.</li>
+              <li>One unexpected repair forces Jordan right back onto high-interest credit cards—triggering stress and financial avoidance.</li>
+            </ul>
+          </div>
+          <div class="box">
+            <h3>The 90-Day Practical Defense</h3>
+            <ul>
+              <li><strong>Days 1–30:</strong> Freeze card usage; pay minimums; automate $130/mo surplus to a separate savings account ($790 baseline by Day 90).</li>
+              <li><strong>Days 31–60:</strong> Trim $70/mo from discretionary takeout to hit the <strong>$1,000 Buffer Goal</strong> in 90 days.</li>
+              <li><strong>Day 91+:</strong> Pivot surplus into systematic debt elimination.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <span>TAITT FIN — Your Wealth Snapshot™</span>
+        <span>Slide 5 of 8</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 6 -->
+    <section class="slide" data-notes="Once your 90-day buffer is underway, we look at your protection and tax efficiency. In insurance planning, we use a smart risk strategy: never pay high premiums for small, manageable losses you can cover with savings, and never leave major risks—like Disability Income or liability lawsuits—uninsured. On the tax side, if you get a large tax refund every spring while carrying credit card debt, you're giving the government an interest-free loan. Adjusting your withholding and using pre-tax workplace accounts puts cash flow back into your monthly paycheck.">
+      <div class="slide-header">
+        <div class="slide-title-area">
+          <div class="slide-kicker">Risk Management &amp; Tax Efficiency</div>
+          <h2>Protecting Your Paycheck &amp; Cash Flow</h2>
+        </div>
+        <img src="" alt="Taitt Fin Banner" class="header-logo slide-logo-render" />
+      </div>
+      <div class="slide-body">
+        <div class="grid-2">
+          <div class="box">
+            <h3>Smart Risk Management</h3>
+            <ul>
+              <li><strong>Retain Small Risks, Insure Major Losses:</strong> Using appropriate deductibles keeps monthly insurance premiums affordable.</li>
+              <li><strong>Protect Your Paycheck (Disability):</strong> Ensuring you have adequate income protection if illness or injury prevents you from working.</li>
+              <li><strong>Liability Defense:</strong> Reviewing Homeowners/Renters and Auto liability limits, and adding an Umbrella policy when personal assets grow.</li>
+            </ul>
+          </div>
+          <div class="box">
+            <h3>Tax &amp; Withholding Efficiency</h3>
+            <ul>
+              <li><strong>Avoid Unnecessary Tax Refunds:</strong> A massive spring tax refund means over-withholding all year while paying interest on credit cards[span_10](start_span)[span_10](end_span).</li>
+              <li><strong>Pre-Tax Advantages:</strong> Utilizing workplace pre-tax retirement accounts or health savings options to lower your annual taxable income[span_11](start_span)[span_11](end_span)[span_12](start_span)[span_12](end_span).</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <span>TAITT FIN — Your Wealth Snapshot™</span>
+        <span>Slide 6 of 8</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 7 -->
+    <section class="slide" data-notes="Second part of our long-term planning: Retirement and Estate readiness. First, always verify your employer's exact retirement match formula—leaving employer match dollars on the table is turning down an instant return. Second, estate planning is not just for the wealthy; it is your Personal Disaster Prevention Plan. Research shows that 60% of family wealth transfers fail because of a lack of family communication and trust, not poor investments. Having your essential directives in place protects your family and ensures your wishes are honored.">
+      <div class="slide-header">
+        <div class="slide-title-area">
+          <div class="slide-kicker">Retirement &amp; Estate Readiness</div>
+          <h2>Future Design &amp; Disaster Prevention</h2>
+        </div>
+        <img src="" alt="Taitt Fin Banner" class="header-logo slide-logo-render" />
+      </div>
+      <div class="slide-body">
+        <div class="grid-2">
+          <div class="box">
+            <h3>Retirement Readiness</h3>
+            <ul>
+              <li><strong>Capture 100% of Employer Match:</strong> Review your company benefit summary to ensure you never leave free matching dollars behind.</li>
+              <li><strong>Consistency Beats Timing:</strong> Steady, automated contributions outperform trying to time the market.</li>
+              <li><strong>Realistic Projections:</strong> Factoring in true inflation-adjusted growth so your nest egg sustains your lifestyle.</li>
+            </ul>
+          </div>
+          <div class="box">
+            <h3>Essential Estate Directives</h3>
+            <ul>
+              <li><strong>Open Communication:</strong> Preventing family friction by discussing legacy plans openly.</li>
+              <li><strong>Your 4 Essential Directives:</strong>
+                <ol style="margin-top:4px;padding-left:18px;">
+                  <li>Updated Beneficiary Designations</li>
+                  <li>Durable Power of Attorney for Property</li>
+                  <li>Healthcare Surrogate / Living Will</li>
+                  <li>Valid Will &amp; Important Documents Folder</li>
+                </ol>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <span>TAITT FIN — Your Wealth Snapshot™</span>
+        <span>Slide 7 of 8</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 8 -->
+    <section class="slide" data-notes="You don't have to overhaul your entire financial life tonight. Your only step today is to open the Snapshot link, spend 10 minutes scoring your domains, and book your confidential 30-minute Discovery Call with me. In that session, we will focus the lens on your top 2 to 3 priorities for the next 90 days—and then check in quarterly during Year 1 so your progress sticks. Thank you, and let's open it up for questions!">
+      <div class="slide-header">
+        <div class="slide-title-area">
+          <div class="slide-kicker">Your Next Step</div>
+          <h2>Your 90-Day Roadmap &amp; Continuity</h2>
+        </div>
+        <img src="" alt="Taitt Fin Banner" class="header-logo slide-logo-render" />
+      </div>
+      <div class="slide-body">
+        <div class="grid-2">
+          <div class="box">
+            <h3>The 90-Day Roadmap</h3>
+            <ul>
+              <li><strong>Step 1 (Today — 10 Mins):</strong> Complete your confidential <em>Wealth Snapshot™</em> self-assessment.</li>
+              <li><strong>Step 2 (Weeks 1–2):</strong> <strong>30-Minute 1-on-1 Discovery Call</strong> with Jason Taitt, AFC®, CFT™ to review peer benchmarks and map your ecosystem.</li>
+              <li><strong>Step 3 (Weeks 3–4):</strong> <strong>45-Minute Action Plan Session</strong> locking in 2–3 practical priorities for Days 1–90.</li>
+            </ul>
+          </div>
+          <div class="box">
+            <h3>Day 91+ Long-Term Continuity</h3>
+            <ul>
+              <li><strong>Year 1 Quarterly Check-Ins:</strong> Structured touchpoints to transition from starter buffer defense into debt reduction and asset building.</li>
+              <li><strong>Year 2+ Semi-Annual Reviews:</strong> 6-month checkups timed around Open Enrollment and Tax Season.</li>
+              <li><strong>Book Now:</strong> Use your scheduling link or email <strong>jason@taittfin.com</strong>.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <span><strong>TAITT FIN</strong> • Jason Taitt, AFC®, CFT™</span>
+        <span>jason@taittfin.com • www.taittfin.net • 813-485-5891</span>
+      </div>
+    </section>
+
+  </div>
+
+  <div class="notes-panel" id="notes-box">
+    <strong class="label">Speaker Teleprompter Notes (Press 'S' to Hide/Show)</strong>
+    <div id="notes-text"></div>
+  </div>
+
+  <script>
+    // Generate clean horizontal banner logo with nephew & camera for slides
+    const bannerSvg = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="70" viewBox="0 0 300 70"><text x="5" y="38" font-family="Georgia, serif" font-size="28" font-weight="bold" fill="#111111" letter-spacing="1">TAITT FIN</text><text x="5" y="58" font-family="Georgia, serif" font-size="14" fill="#555555">Your Wealth Snapshot</text></svg>';
+    document.querySelectorAll('.slide-logo-render').forEach(img => img.src = bannerSvg);
+
+    const slides = document.querySelectorAll('.slide');
+    const counter = document.getElementById('counter');
+    const progress = document.getElementById('progress');
+    const notesBox = document.getElementById('notes-box');
+    const notesText = document.getElementById('notes-text');
+    const notesBtn = document.getElementById('notes-btn');
+    let current = 0;
+
+    function updateSlide() {
+      slides.forEach((s, i) => s.classList.toggle('active', i === current));
+      counter.textContent = `Slide ${current + 1} / ${slides.length}`;
+      progress.style.width = `${((current + 1) / slides.length) * 100}%`;
+      notesText.textContent = slides[current].getAttribute('data-notes') || '';
+    }
+
+    function nextSlide() {
+      if (current < slides.length - 1) { current++; updateSlide(); }
+    }
+
+    function prevSlide() {
+      if (current > 0) { current--; updateSlide(); }
+    }
+
+    function toggleNotes() {
+      notesBox.classList.toggle('hidden');
+      notesBtn.classList.toggle('active');
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') {
+        e.preventDefault(); nextSlide();
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        e.preventDefault(); prevSlide();
+      } else if (e.key.toLowerCase() === 's') {
+        toggleNotes();
+      }
+    });
+
+    updateSlide();
+  </script>
+</body>
+</html>

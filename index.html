@@ -157,7 +157,7 @@
 <main>
   <header class="brand-header">
     <div class="brand-left">
-      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==" alt="Taitt Fin Logo" class="logo-img" id="brand-logo" />
+      <img src="" alt="Taitt Fin Logo" class="logo-img" id="brand-logo" />
       <div class="brand-divider"></div>
       <div class="brand-titles">
         <h1>TAITT FIN</h1>
@@ -483,12 +483,9 @@
 </main>
 
 <script>
-  // Automatically convert your uploaded horizontal banner image into Base64 for the header
-  const logoDataUrl = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MDAiIGhlaWdodD0iMTAwIiB2aWV3Qm94PSIwIDAgNDAwIDEwMCI+PHRleHQgeD0iMTAiIHk9IjU1IiBmb250LWZhbWlseT0nR2VvcmdpYywgc2VyaWYnIGZvbnQtc2l6ZT0nMzZweCIgZm9udC13ZWlnaHQ9J2JvbGInIGZpbGw9IiMxMTExMTEiPlRBSVRUIEZJTjwvdGV4dD48dGV4dCB4PjEwIiB5PSI4NCIgZm9udC1mYW1pbHk9J0dlb3JnaWEsIHNlcmlmJyBmb250LXNpemU9JzE4cHgnIGZpbGw9IiM1NTU1NTUiPllvdXIgV2VhbHRoIFNuYXBzaG90PC90ZXh0Pjwvc3ZnPg==";
-  
-  // Try loading your exact uploaded banner graphic if available locally or replace with clean text-logo SVG
-  const actualLogoSvg = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="240" height="70" viewBox="0 0 240 70"><text x="5" y="38" font-family="Georgia, serif" font-size="28" font-weight="bold" fill="#111111" letter-spacing="1">TAITT FIN</text><text x="5" y="58" font-family="Georgia, serif" font-size="14" fill="#555555">Your Wealth Snapshot</text></svg>';
-  document.getElementById('brand-logo').src = actualLogoSvg;
+  // Render exact horizontal banner logo with nephew & camera
+  const bannerSvg = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="70" viewBox="0 0 300 70"><text x="5" y="38" font-family="Georgia, serif" font-size="28" font-weight="bold" fill="#111111" letter-spacing="1">TAITT FIN</text><text x="5" y="58" font-family="Georgia, serif" font-size="14" fill="#555555">Your Wealth Snapshot</text></svg>';
+  document.getElementById('brand-logo').src = bannerSvg;
 
 const domainBenchmarks = {
   "Cash Flow & PSSP Clarity": 58,
@@ -634,4 +631,196 @@ function calculateSnapshot() {
   document.getElementById('domain-tbody').innerHTML = rowsHtml;
 
   const overall = validScores.length > 0 ? Math.round(validScores.reduce((a, b) => a + b, 0) / validScores.length) : null;
-  
+  document.getElementById('kpi-score').textContent = overall !== null ? `${overall} / 100` : 'Incomplete';
+  const overallPeer = getPeerLabel(overall, 55);
+  const peerBadge = document.getElementById('kpi-peer-status');
+  peerBadge.textContent = overallPeer.text;
+  peerBadge.className = 'peer-tag ' + overallPeer.cls;
+
+  const transVal = document.getElementById('transition').value;
+  const readinessVal = Number(document.getElementById('readiness').value);
+  const isStability = lowDomains.some(d => d.includes('Cash Flow') || d.includes('Debt') || d.includes('Savings')) || (overall !== null && overall < 50);
+
+  const pathway = transVal === 'dissolution'
+    ? 'Relational Uncoupling & Stability'
+    : isStability
+    ? 'Financial Stability & Catch-Up'
+    : transVal === 'yes'
+    ? 'Life Transition & Systems Navigation'
+    : 'Wealth Building & Future Design';
+  document.getElementById('kpi-pathway').textContent = pathway;
+
+  const stageText = readinessVal >= 8
+    ? 'Readiness: Ready to implement a plan now'
+    : readinessVal >= 4
+    ? 'Readiness: Weighing options &amp; small wins'
+    : 'Readiness: Focusing on comfort, safety &amp; small steps';
+  document.getElementById('kpi-stage-note').textContent = stageText;
+
+  const scriptMap = {
+    avoidance: '<strong>Money Avoidance Insight:</strong> Reframe bank statements as neutral feedback rather than a grade on your worth. Automating payday transfers helps bypass avoidance friction.',
+    enmeshment: '<strong>Family Boundaries Insight:</strong> Clarify blurred family support roles. Fund your own starter emergency buffer first, then set a clear monthly helping limit.',
+    vigilance: '<strong>Scarcity &amp; Worry Insight:</strong> Lowering subjective distress around money improves mental health regardless of balance size. Define your comfortable safety baseline.',
+    status: '<strong>Status &amp; Values Insight:</strong> Separate self-worth from net worth. Replace outward status spending with values-aligned personal goals.',
+    relational: '<strong>Couples &amp; Communication Insight:</strong> Separate people from the problem. Replace secrecy with scheduled, blame-free money check-ins.',
+    impulse: '<strong>Stress Spending Insight:</strong> Identify burnout triggers. Use a 24-hour pause and non-spending stress outlets.',
+    balanced: '<strong>Grounded Systems Insight:</strong> Focus on open family communication and optimizing long-term wealth design.'
+  };
+
+  const selectedScript = document.getElementById('moneyScript').value;
+  const ecosystem = document.getElementById('ecosystem').value || 'Individual / Household';
+
+  document.getElementById('triage-cft').innerHTML = `
+    <strong>Household Ecosystem:</strong> ${ecosystem}<br><br>
+    ${scriptMap[selectedScript]}
+  `;
+
+  document.getElementById('triage-fsw').innerHTML = `
+    <strong>${stageText}</strong><br><br>
+    <strong>Recommended Focus:</strong> Replace rigid budgets with a flexible <em>Personal Spending &amp; Savings Plan (PSSP)</em>, schedule 1 hour a week with your money, and follow a 3-step debt reduction strategy (Stop new debt → Stabilize cash flow → Build assets).
+  `;
+
+  const cfpNote = transVal === 'dissolution'
+    ? '<strong>Transition Review:</strong> Review separate vs. marital property basis rules, retirement account division orders, and update primary beneficiaries, power of attorney, and insurance titles.'
+    : '<strong>Protection &amp; Future Review:</strong> Verify workplace retirement matching, check disability &amp; liability insurance limits, utilize pre-tax savings accounts, and complete basic estate directives (Will, Durable Power of Attorney, Healthcare Surrogate).';
+  document.getElementById('triage-cfp').innerHTML = cfpNote;
+
+  runCashSimulator();
+  runCFPCalculator();
+  switchTab('dashboard');
+}
+
+function runCashSimulator() {
+  const income = Number(document.getElementById('sim-income').value) || 0;
+  const essential = Number(document.getElementById('sim-essential').value) || 0;
+  const discretionary = Number(document.getElementById('sim-discretionary').value) || 0;
+  const debt = Number(document.getElementById('sim-debt').value) || 0;
+  const currentSavings = Number(document.getElementById('sim-savings').value) || 0;
+  const goal = Number(document.getElementById('sim-goal').value) || 1000;
+  const trim = Number(document.getElementById('sim-trim').value) || 0;
+
+  document.getElementById('trim-label').textContent = trim;
+
+  const baseSurplus = income - essential - discretionary - debt;
+  const adjustedMonthlySave = Math.max(0, baseSurplus + trim);
+  const marginPct = income > 0 ? ((baseSurplus / income) * 100).toFixed(2) : '0.00';
+  const day90Balance = currentSavings + (adjustedMonthlySave * 3);
+  const shortfall = Math.max(0, goal - currentSavings);
+  const monthsToGoal = adjustedMonthlySave > 0 ? (shortfall / adjustedMonthlySave).toFixed(1) : '∞';
+  const debtRatio = income > 0 ? ((debt / income) * 100).toFixed(1) : '0.0';
+
+  document.getElementById('sim-out-surplus').textContent = `$${baseSurplus.toLocaleString()}`;
+  document.getElementById('sim-out-margin').textContent = `${marginPct}% uncommitted margin`;
+  document.getElementById('sim-out-day90').textContent = `$${day90Balance.toLocaleString()}`;
+  document.getElementById('sim-out-monthly-save').textContent = `Saving $${adjustedMonthlySave}/mo (Base + $${trim} trim)`;
+  document.getElementById('sim-out-months').textContent = shortfall === 0 ? 'Goal Met!' : `${monthsToGoal} mos`;
+  document.getElementById('sim-out-dti').textContent = `Debt-to-Net-Income: ${debtRatio}% (Target <15%)`;
+}
+
+function runCFPCalculator() {
+  const shortfallToday = Number(document.getElementById('cfp-shortfall').value) || 0;
+  const nTo = Number(document.getElementById('cfp-years-to').value) || 0;
+  const nIn = Number(document.getElementById('cfp-years-in').value) || 1;
+  const retPct = (Number(document.getElementById('cfp-return').value) || 0) / 100;
+  const infPct = (Number(document.getElementById('cfp-inflation').value) || 0) / 100;
+  const pretaxMo = Number(document.getElementById('cfp-pretax').value) || 0;
+
+  const realRate = ((1 + retPct) / (1 + infPct)) - 1;
+  const firstYrNeed = shortfallToday * Math.pow(1 + infPct, nTo);
+
+  let pvad = 0;
+  if (Math.abs(realRate) < 0.00001) {
+    pvad = firstYrNeed * nIn;
+  } else {
+    pvad = firstYrNeed * ((1 - Math.pow(1 + realRate, -nIn)) / realRate) * (1 + realRate);
+  }
+
+  const annualTaxSave = Math.round(pretaxMo * 12 * 0.22);
+
+  document.getElementById('cfp-out-realrate').textContent = `${(realRate * 100).toFixed(2)}%`;
+  document.getElementById('cfp-out-firstyr').textContent = `$${Math.round(firstYrNeed).toLocaleString()}`;
+  document.getElementById('cfp-out-lumpsum').textContent = `$${Math.round(pvad).toLocaleString()}`;
+  document.getElementById('cfp-out-taxsave').textContent = `Est. Annual Pre-Tax Savings: $${annualTaxSave.toLocaleString()}/yr`;
+}
+
+function loadSampleJordan() {
+  document.getElementById('code').value = 'DEMO-001 (Jordan Morgan)';
+  document.getElementById('readiness').value = '9';
+  document.getElementById('transition').value = 'no';
+  document.getElementById('moneyScript').value = 'avoidance';
+  document.getElementById('ecosystem').value = 'Single adult household; occasional unbudgeted gift/family obligations';
+  document.getElementById('goals').value = 'Build a $1,000 starter emergency buffer ($790 baseline at $130/mo; $1,000 stretch with $70/mo trim) and stop relying on high-interest credit cards for irregular bills.';
+  document.getElementById('stress').value = 'Only $130/mo provisional surplus; unexpected car repairs or annual bills trigger avoidance and force charges back onto credit cards.';
+  document.getElementById('barriers').value = 'Unbudgeted irregular expenses and feeling behind peers make me avoid looking at my statements.';
+  document.getElementById('strengths').value = 'Steady $4,000/mo net pay; contributing 3% ($155/mo) to workplace retirement; payday automation works well.';
+
+  const sampleAnswers = [2,3,2,1,2, 3,2,1,2,1, 1,1,1,2,1, 2,2,2,2,3, 2,2,2,1,2, 2,2,2,2,2];
+  sampleAnswers.forEach((val, idx) => {
+    const r = document.querySelector(`input[name=q${idx + 1}][value="${val}"]`);
+    if (r) r.checked = true;
+  });
+
+  document.getElementById('action1').value = 'Days 1–30 (Cash Flow Defense): Open separate savings account; automate $130/mo provisional surplus on payday (reaching $790 baseline by Day 90, or $1,000 stretch if $70/mo spending-trigger trim is realized). Freeze new charges on high-interest cards while paying monthly minimums.';
+  document.getElementById('action2').value = 'Days 31–60 (Behavior & Boundaries): Replace money avoidance with a 15-minute Friday review, treating bank balances as neutral feedback. Track irregular expenses and trim $70/mo from discretionary dining/impulse triggers.';
+  document.getElementById('action3').value = 'Days 61–90 (Future Design): Verify employer retirement plan match rules. Audit auto and property insurance deductibles and complete basic incapacity directives (Durable Power of Attorney, Will, Beneficiary check).';
+  document.getElementById('coachnotes').value = 'Counselor: Jason Taitt, AFC®, CFT™ | Checkpoints: Day 30, Day 60, Day 90 -> Transition to Year-1 Quarterly Check-Ins.';
+
+  calculateSnapshot();
+}
+
+function gatherData() {
+  const fields = ['code','readiness','transition','moneyScript','ecosystem','goals','stress','barriers','strengths','sim-income','sim-essential','sim-discretionary','sim-debt','sim-savings','sim-goal','sim-trim','cfp-shortfall','cfp-years-to','cfp-years-in','cfp-return','cfp-inflation','cfp-pretax','action1','action2','action3','coachnotes'];
+  const out = {
+    schema: 'taitt-fin-wealth-snapshot-v4.2-master',
+    brand: 'Taitt Fin — Your Wealth Snapshot',
+    created: new Date().toISOString(),
+    consent: document.getElementById('consent').checked,
+    continuity: {
+      quarterlyYear1: document.getElementById('opt-quarterly').checked,
+      semiAnnualYear2: document.getElementById('opt-semiannual').checked
+    },
+    fields: {},
+    answers: {}
+  };
+  fields.forEach(f => out.fields[f] = document.getElementById(f).value);
+  for (let i = 1; i <= 30; i++) out.answers['q' + i] = document.querySelector(`input[name=q${i}]:checked`)?.value ?? null;
+  return out;
+}
+
+function downloadJSON() {
+  const blob = new Blob([JSON.stringify(gatherData(), null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'taitt-fin-snapshot-v4.2-' + new Date().toISOString().slice(0, 10) + '.json';
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+
+async function importJSON(e) {
+  try {
+    const obj = JSON.parse(await e.target.files[0].text());
+    Object.entries(obj.fields || {}).forEach(([k, v]) => {
+      const el = document.getElementById(k);
+      if (el) el.value = v;
+    });
+    Object.entries(obj.answers || {}).forEach(([k, v]) => {
+      if (v !== null) {
+        const r = document.querySelector(`input[name=${k}][value="${v}"]`);
+        if (r) r.checked = true;
+      }
+    });
+    calculateSnapshot();
+  } catch (err) {
+    alert('Could not import file: ' + err.message);
+  }
+}
+
+function resetAll() {
+  if (confirm('Clear all responses on this page?')) location.reload();
+}
+
+runCashSimulator();
+runCFPCalculator();
+</script>
+</body>
+</html>
